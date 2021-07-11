@@ -25,7 +25,7 @@ public class ActivityTrackerMain {
         factory.close();
     }
 
-    private static void addActivity(EntityManager em){
+    private static void addActivity(EntityManager em) {
         Activity a = new Activity(LocalDateTime.of(2020, Month.APRIL, 12, 5, 9)
                 , "description", ActivityType.BIKING);
         Activity b = new Activity(LocalDateTime.of(2020, Month.OCTOBER, 16, 5, 9)

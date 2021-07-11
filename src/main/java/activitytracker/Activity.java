@@ -16,11 +16,11 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "Start_time")
+    @Column(name = "start_time")
     LocalDateTime startTime;
     @Column(name = "description")
     String desc;
-    @Column(name = "Activity_type")
+    @Column(name = "activity_type")
     ActivityType type;
 
     public Activity(LocalDateTime startTime, String desc, ActivityType type) {
