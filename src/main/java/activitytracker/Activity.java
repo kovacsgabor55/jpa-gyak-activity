@@ -21,12 +21,13 @@ public class Activity {
     @Column(name = "description")
     String desc;
     @Column(name = "activity_type")
+    @Enumerated(EnumType.STRING)
     ActivityType type;
 
     public Activity(LocalDateTime startTime, String desc, ActivityType type) {
         this.startTime = startTime;
         this.desc = desc;
-        //this.type = type;
+        this.type = type;
     }
 }
 
