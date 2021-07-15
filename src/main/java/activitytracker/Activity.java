@@ -16,11 +16,11 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "start_time")
+    @Column(name = "start_time", nullable = false)
     LocalDateTime startTime;
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 200)
     String desc;
-    @Column(name = "activity_type")
+    @Column(name = "activity_type", nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     ActivityType type;
 
