@@ -28,10 +28,10 @@ class ActivityDaoTest {
         dataSource.setUser("activitytracker");
         dataSource.setPassword("activitytracker");
 
-        Flyway flyway = new Flyway();
+        /*Flyway flyway = new Flyway();
         flyway.setDataSource(dataSource);
         flyway.clean();
-        flyway.migrate();
+        flyway.migrate();*/
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pu");
         activityDao = new ActivityDao(entityManagerFactory);
