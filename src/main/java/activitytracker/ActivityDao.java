@@ -2,6 +2,7 @@ package activitytracker;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ActivityDao {
@@ -33,5 +34,15 @@ public class ActivityDao {
                 .getResultList();
         em.close();
         return activities;
+    }
+
+    public void updateActivity(long id, String desc) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Activity activity = em.find(Activity.class, id);
+        em.getTransaction().begin();
+        activity.desc = desc;
+        activity.updatedAt = LocalDateTime.now();
+        em.getTransaction().commit();
+        em.close();
     }
 }

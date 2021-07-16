@@ -39,11 +39,11 @@ class ActivityDaoTest {
 
     @Test
     void testSaveThenFindById() {
-        Activity employee = new Activity(LocalDateTime.of(2020, Month.JANUARY, 15, 5, 9)
+        Activity activity = new Activity(LocalDateTime.of(2020, Month.JANUARY, 15, 5, 9)
                 , "description", ActivityType.RUNNING);
-        activityDao.saveActivity(employee);
+        activityDao.saveActivity(activity);
 
-        long id = employee.getId();
+        long id = activity.getId();
 
         Activity another = activityDao.findActivityById(id);
         assertEquals("description", another.getDesc());
@@ -61,5 +61,19 @@ class ActivityDaoTest {
                 activities.stream()
                         .map(Activity::getDesc)
                         .collect(Collectors.toList()));
+    }
+
+    @Test
+    void testSaveThenUpdateActivity() {
+        Activity activity = new Activity(LocalDateTime.of(2020, Month.JANUARY, 15, 5, 9)
+                , "description", ActivityType.RUNNING);
+        activityDao.saveActivity(activity);
+
+        long id = activity.getId();
+
+        activityDao.updateActivity(id, "noitpircsed");
+        Activity resultActivity = activityDao.findActivityById(id);
+        assertEquals("noitpircsed", resultActivity.getDesc());
+        assertTrue(resultActivity.getCreatedAt().isBefore(resultActivity.getUpdatedAt()));
     }
 }
