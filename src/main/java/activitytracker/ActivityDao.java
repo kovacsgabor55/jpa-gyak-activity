@@ -40,9 +40,20 @@ public class ActivityDao {
         EntityManager em = entityManagerFactory.createEntityManager();
         Activity activity = em.find(Activity.class, id);
         em.getTransaction().begin();
-        activity.desc = desc;
-        activity.updatedAt = LocalDateTime.now();
+        activity.setDesc(desc);
+        activity.setUpdatedAt(LocalDateTime.now());
         em.getTransaction().commit();
         em.close();
+    }
+
+    public Activity findActivityByIdWithLabels(long id) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Activity activity = em
+                .createQuery("select a from Activity a join  fetch  a.labels where id = :id",
+                        Activity.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        em.close();
+        return activity;
     }
 }

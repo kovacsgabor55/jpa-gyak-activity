@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,5 +76,16 @@ class ActivityDaoTest {
         Activity resultActivity = activityDao.findActivityById(id);
         assertEquals("noitpircsed", resultActivity.getDesc());
         assertTrue(resultActivity.getCreatedAt().isBefore(resultActivity.getUpdatedAt()));
+    }
+
+    @Test
+    void testActivityWithLabels() {
+        Activity activity = new Activity(LocalDateTime.of(2020, Month.JANUARY, 15, 5, 9)
+                , "description", ActivityType.RUNNING);
+        activity.setLabels(List.of("slovakia", "sturovo"));
+        activityDao.saveActivity(activity);
+
+        Activity anotherActivity = activityDao.findActivityByIdWithLabels(activity.getId());
+        assertEquals(List.of("slovakia", "sturovo"), anotherActivity.getLabels());
     }
 }
