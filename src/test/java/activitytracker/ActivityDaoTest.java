@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -87,5 +88,49 @@ class ActivityDaoTest {
 
         Activity anotherActivity = activityDao.findActivityByIdWithLabels(activity.getId());
         assertEquals(List.of("slovakia", "sturovo"), anotherActivity.getLabels());
+    }
+
+    @Test
+    void testTrackPoint() {
+        TrackPoint trackPointStart = new TrackPoint(LocalDate.of(2021, 12, 22), 34.543, 25.765);
+        TrackPoint trackPointStop = new TrackPoint(LocalDate.of(2021, 12, 23), 34.560, 25.712);
+
+        Activity activity = new Activity(LocalDateTime.now(), "description", ActivityType.BIKING);
+        activity.addTrackPoint(trackPointStop);
+        activity.addTrackPoint(trackPointStart);
+        activityDao.saveActivity(activity);
+
+        Activity anotherActivity = activityDao.findActivityByIdWithTrackPoints(activity.getId());
+
+        assertEquals(2, anotherActivity.getTrackPoints().size());
+        assertEquals("2021-12-22", anotherActivity.getTrackPoints().get(0).getTime().toString());
+    }
+
+    @Test
+    void testAddTrackNumber() {
+        Activity activity = new Activity(LocalDateTime.of(2020, Month.JANUARY, 15, 5, 9)
+                , "description", ActivityType.RUNNING);
+        activityDao.saveActivity(activity);
+
+        activityDao.addTrackPoint(activity.getId(), new TrackPoint(LocalDate.now(), 34.543, 25.765));
+
+        Activity anotherActivity = activityDao.findActivityByIdWithTrackPoints(activity.getId());
+
+        assertEquals(1, anotherActivity.getTrackPoints().size());
+    }
+
+    @Test
+    void testRemove() {
+        Activity activity = new Activity(LocalDateTime.of(2020, Month.JANUARY, 15, 5, 9)
+                , "description", ActivityType.RUNNING);
+        TrackPoint trackPointStart = new TrackPoint(LocalDate.of(2021, 12, 22), 34.543, 25.765);
+        TrackPoint trackPointStop = new TrackPoint(LocalDate.of(2021, 12, 23), 34.560, 25.712);
+
+        activity.addTrackPoint(trackPointStop);
+        activity.addTrackPoint(trackPointStart);
+
+        activityDao.saveActivity(activity);
+
+        activityDao.deleteActivity(activity.getId());
     }
 }

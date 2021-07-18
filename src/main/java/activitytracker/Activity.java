@@ -41,11 +41,23 @@ public class Activity {
     @Column(name = "label")
     private List<String> labels = new ArrayList<>();
 
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "activity")
+    @OrderBy("time")
+    private List<TrackPoint> trackPoints = new ArrayList<>();
+
     public Activity(LocalDateTime startTime, String desc, ActivityType type) {
         this.startTime = startTime;
         this.desc = desc;
         this.type = type;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
+    }
+
+    public void addTrackPoint(TrackPoint trackPoint) {
+        if (trackPoints == null) {
+            trackPoints = new ArrayList<>();
+        }
+        trackPoints.add(trackPoint);
+        trackPoint.setActivity(this);
     }
 }
