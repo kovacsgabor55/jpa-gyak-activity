@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "activities")
+@NamedQuery(name = "findTrackPointCoordinatesByDate", query = "select new activitytracker.Coordinate(t.lat, t.lon) from Activity a join a.trackPoints t where t.time > :afterThis order by t.time")
 public class Activity {
 
     @Id

@@ -133,4 +133,53 @@ class ActivityDaoTest {
 
         activityDao.deleteActivity(activity.getId());
     }
+
+    @Test
+    void findTrackPointCoordinatesByDate() {
+        TrackPoint trackPoint1 = new TrackPoint(LocalDate.of(2017, 12, 22), 1.1, 25.765);
+        TrackPoint trackPoint2 = new TrackPoint(LocalDate.of(2018, 01, 01), 2.2, 25.765);
+        TrackPoint trackPoint3 = new TrackPoint(LocalDate.of(2021, 12, 24), 3.3, 25.765);
+        TrackPoint trackPoint4 = new TrackPoint(LocalDate.of(2021, 12, 25), 4.4, 25.712);
+        TrackPoint trackPoint5 = new TrackPoint(LocalDate.of(2021, 12, 26), 5.5, 25.712);
+
+        Activity activity = new Activity(LocalDateTime.now(), "description", ActivityType.BIKING);
+        activity.addTrackPoint(trackPoint1);
+        activity.addTrackPoint(trackPoint2);
+        activity.addTrackPoint(trackPoint3);
+        activity.addTrackPoint(trackPoint4);
+        activity.addTrackPoint(trackPoint5);
+        activityDao.saveActivity(activity);
+
+        LocalDate localDate = LocalDate.of(2018, 01,01);
+        List<Coordinate> coordinates = activityDao.findTrackPointCoordinatesByDate(localDate, 0, 3);
+        System.out.println(coordinates.size());
+        assertEquals(3,coordinates.size());
+        assertEquals(trackPoint3.getLat(),coordinates.get(0).getLat());
+        assertEquals(trackPoint4.getLat(),coordinates.get(1).getLat());
+        assertEquals(trackPoint5.getLat(),coordinates.get(2).getLat());
+        System.out.println(coordinates);
+    }
+
+    @Test
+    void findTrackPointCoordinatesByDateStart1Stop2() {
+        TrackPoint trackPoint1 = new TrackPoint(LocalDate.of(2017, 12, 22), 1.1, 25.765);
+        TrackPoint trackPoint2 = new TrackPoint(LocalDate.of(2018, 01, 01), 2.2, 25.765);
+        TrackPoint trackPoint3 = new TrackPoint(LocalDate.of(2021, 12, 24), 3.3, 25.765);
+        TrackPoint trackPoint4 = new TrackPoint(LocalDate.of(2021, 12, 25), 4.4, 25.712);
+
+        Activity activity = new Activity(LocalDateTime.now(), "description", ActivityType.BIKING);
+        activity.addTrackPoint(trackPoint1);
+        activity.addTrackPoint(trackPoint2);
+        activity.addTrackPoint(trackPoint3);
+        activity.addTrackPoint(trackPoint4);
+        activityDao.saveActivity(activity);
+
+        LocalDate localDate = LocalDate.of(2018, 01,01);
+        List<Coordinate> coordinates = activityDao.findTrackPointCoordinatesByDate(localDate, 1, 1);
+        System.out.println(coordinates.size());
+        assertEquals(1,coordinates.size());
+        //assertEquals(trackPoint3.getLat(),coordinates.get(0).getLat());
+        assertEquals(trackPoint4.getLat(),coordinates.get(0).getLat());
+        System.out.println(coordinates);
+    }
 }
