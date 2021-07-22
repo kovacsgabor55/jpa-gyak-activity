@@ -12,4 +12,4 @@
 * [x] Kapcsolatok
 * [x] Lekérdezések
 * [x] Haladó lekérdezések
-* [ ] Deklaratív tranzakciókezelés
+* [x] Deklaratív tranzakciókezelés
